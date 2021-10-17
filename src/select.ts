@@ -14,10 +14,10 @@ const selectDotEnv = () => {
   });
 
   if (selection !== null) {
-    if (config.rememberLastSelection) {
-      const selectedChoice = choices[selection];
-      if (selectedChoice) {
-        config.lastSelection = selectedChoice;
+    const selectedChoice = choices[selection];
+    if (selectedChoice) {
+      config.lastSelection = selectedChoice;
+      if (config.rememberLastSelection) {
         saveState(config.lastSelection);
       }
     }
