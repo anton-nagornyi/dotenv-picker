@@ -1,0 +1,13 @@
+{
+  "extends": ["airbnb-typescript/base"],
+  "parserOptions": {
+    "project": ["./tsconfig.json", "./tsconfig.tests.json"]
+  },
+  "rules": {
+    "import/prefer-default-export": 0,
+    "class-methods-use-this": 0,
+    "no-plusplus": 0,
+    "no-restricted-syntax": 0,
+    "max-len": 0
+  }
+}
