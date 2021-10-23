@@ -8,6 +8,7 @@ convenient way to select which configuration to use while a script run.
 * [Easy usage](#easy-usage)
 * [Switch between .env files on a run](#switch-between-env-files-on-a-run)
 * [Works with ts-node](#works-with-ts-node)
+* [Use shell to set environment variables](#use-shell-to-set-environment-variables)
 * [Pass commonly used features via argv](#pass-commonly-used-features-via-argv)
 * [Configure via json configuration file](#configure-via-json-configuration-file)
 * [Remember previous selection per script](#remember-previous-selection-per-script)
@@ -51,6 +52,26 @@ Select `.env` file hit `ENTER` and you are done!
   }
 }
 ```
+
+### Use shell to set environment variables
+
+Sometimes you may need to call something like this:
+
+```json
+{
+  "your:command": "npx some.command"
+}
+```
+
+In this case use:
+
+```json
+{
+  "your:command": "dotenv-picker npx some.command"
+}
+```
+This will read variables from `.env` file and then will call `npx some.command` via
+`execSync` with environment variables passed into it.
 
 ### Pass commonly used features via argv
 
