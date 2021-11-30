@@ -27,20 +27,19 @@ Create script in your package.json, for ex:
 ```json
 {
   "scripts": {
-    "start:dev": "node -r dotenv-picker/select you.script.js"
+    "start:dev": "node -r dotenv-picker/select your.script.js"
   }
 }
 ```
 
 ### Switch between .env files on a run
 
-*Dotenv Picker* searches through folders in you project and finds all files 
-satisfying `.env*` pattern. Then it shows a simple UI that allows you to select which `.env` file to use during this
-run.
+*Dotenv Picker* searches in the project's root for all files satisfying `.env*` pattern. Then it shows a simple UI 
+allowing you to select which `.env` file to use during this run.
 
 ![UI](docs/ui1.png "UI")
 
-Select `.env` file hit `ENTER` and you are done!
+Select `.env` file, hit `ENTER` and you are done!
 
 ### Works with ts-node
 
@@ -48,7 +47,7 @@ Select `.env` file hit `ENTER` and you are done!
 ```json
 {
   "scripts": {
-    "start:dev": "ts-node -r dotenv-picker/select you.script.ts"
+    "start:dev": "ts-node -r dotenv-picker/select your.script.ts"
   }
 }
 ```
@@ -75,23 +74,23 @@ This will read variables from `.env` file and then will call `npx some.command` 
 
 ### Pass commonly used features via argv
 
-Like as *dotenv* package *Dotenv Picker* can read some configurational options from 
+Like *dotenv* package *Dotenv Picker* can read some configuration options from 
 command line arguments:
 
 ```json
 {
   "scripts": {
-    "start:dev": "node -r dotenv-picker/select you.script.js dotenv_config_path=.env.1 dotenv_picker_remember_last"
+    "start:dev": "node -r dotenv-picker/select your.script.js dotenv_config_path=.env.1 dotenv_picker_remember_last"
   }
 }
 ```
-* `dotenv_config_path` - if there was no previous selection saved for `you.script.js` 
+* `dotenv_config_path` - if there was no previous selection saved for `your.script.js` 
 then `.env.1` would be automatically selected on UI.
 * `dotenv_picker_remember_last` - instruct *Dotenv Picker* to remember selection for the next run
 
 ### Configure via json configuration file
 
-You might wish to configure *Dotenv Picker* behavior. Create `dotenv-picker.json` in your 
+You may wish to configure *Dotenv Picker* behavior. Create `dotenv-picker.json` in your 
 project's root for that:
 
 ```json
@@ -102,7 +101,7 @@ project's root for that:
   "exitWhenNoSelection": false,
   "defaultSelection": ".env.local",
   "scripts": {
-    "./you.script.js": {
+    "./your.script.js": {
       "searchPath": "./tests/data/hierarchy",
       "exclude": ["node_modules"],
       "rememberLastSelection": true,
@@ -111,8 +110,8 @@ project's root for that:
     }
   }
 ```
-Configuration may be done per script. If you are starting `you.script.js` then you need to
-have the corespondent `./you.script.js` field inside the `scripts` section.
+Configuration may be done per script. If you are starting `your.script.js` then you need to
+have the corespondent `./your.script.js` field inside the `scripts` section.
 
 Or you can set configuration globally for all scripts at once. The rule here is that
 script config has priority over the global config.
