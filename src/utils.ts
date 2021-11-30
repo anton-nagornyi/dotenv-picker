@@ -10,6 +10,8 @@ export type ScriptConfig = {
   searchPath?: string,
   exclude?: Array<string>
   rememberLastSelection?: boolean
+  exitWhenNoSelection?: boolean
+  defaultSelection?: string
 };
 
 export type ScriptConfigInternal = ScriptConfig & {
@@ -17,6 +19,11 @@ export type ScriptConfigInternal = ScriptConfig & {
 };
 
 export type Config = {
+  searchPath?: string
+  defaultSelection?: string
+  exclude?: Array<string>
+  rememberLastSelection?: boolean
+  exitWhenNoSelection?: boolean
   scripts: {
     [key: string]: ScriptConfig
   }
@@ -98,8 +105,17 @@ const getTsScriptName = (): string => {
 
 const getScriptNameField = (obj: { [key: string]: any }): string => {
   const root = process.cwd();
-  const scriptPath = isTsNodeCall() ? getTsScriptName() : process.argv[1];
+  let scriptPath = isTsNodeCall() ? getTsScriptName() : process.argv[1];
+  if (scriptPath.endsWith('dotenv-picker.js')) {
+    const [,,exe, param] = process.argv;
+    if (exe === 'npx') {
+      scriptPath = param || 'unknown';
+    } else {
+      scriptPath = exe;
+    }
+  }
   const name = normalizeRelativePath(normalizeSlashes(scriptPath.replace(root, '')));
+
   const [fieldName] = Object.keys(obj).filter((f) => path.join(root, f) === path.join(root, name));
   return fieldName || name;
 };
@@ -107,8 +123,12 @@ const getScriptNameField = (obj: { [key: string]: any }): string => {
 const loadConfigFromFile = (): ScriptConfig => {
   if (doesExist(CONFIG_PATH)) {
     const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')) as Config;
-    const { scripts } = config;
-    return scripts[getScriptNameField(scripts)] || {};
+    const { scripts, ...baseConfig } = config;
+    const scriptConfig = (scripts && scripts[getScriptNameField(scripts)]) || {};
+    const defaults: ScriptConfig = {
+      exitWhenNoSelection: true,
+    };
+    return { ...defaults, ...baseConfig, ...scriptConfig };
   }
   return {};
 };
@@ -120,15 +140,29 @@ const loadState = (): State => {
   return { scripts: {} };
 };
 
-const loadScriptState = (): ScriptState => {
+const loadScriptState = (fallback: string | undefined = ''): ScriptState => {
   const state = loadState();
   const { scripts } = state;
-  return scripts[getScriptNameField(scripts)] || { selection: '' };
+  return (scripts && scripts[getScriptNameField(scripts)]) || { selection: fallback };
+};
+
+const getDefaultSelection = (configFromFile: ScriptConfig): string | undefined => {
+  if (!configFromFile.defaultSelection) {
+    return undefined;
+  }
+  if (doesExist(configFromFile.defaultSelection)) {
+    return configFromFile.defaultSelection;
+  }
+  const relative = path.join(configFromFile.searchPath || '', configFromFile.defaultSelection);
+  if (doesExist(relative)) {
+    return normalizeRelativePath(normalizeSlashes(relative));
+  }
+  return undefined;
 };
 
 export const loadConfig = (): ScriptConfigInternal => {
   const configFromFile = loadConfigFromFile();
-  const lastSelectionFromFile = loadScriptState();
+  const lastSelectionFromFile = loadScriptState(getDefaultSelection(configFromFile));
 
   const interestingOpts = ['dotenv_config_path', 'dotenv_picker_remember_last'];
   const opts = Object.fromEntries(process.argv

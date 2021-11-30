@@ -24,6 +24,9 @@ export const baseSelect = (action: (dotenvPath: string) => void) => {
       }
     } else {
       config.lastSelection = '';
+      if (config.exitWhenNoSelection) {
+        process.exit(0);
+      }
     }
   };
 

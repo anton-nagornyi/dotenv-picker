@@ -1,6 +1,6 @@
 {
   "name": "dotenv-picker",
-  "version": "1.0.3",
+  "version": "1.0.8",
   "description": "Choose .env file when running your app",
   "keywords": [
     "dotenv",
@@ -15,8 +15,7 @@
     "check:ts": "ts-node -r ./dist/select.js ./tests/check.ts dotenv_config_path=10 dotenv_picker_remember_last",
     "start:js": "npm run build && npm run check:js",
     "start:ts": "npm run build && npm run check:ts",
-    "test": "jest",
-    "start": "node set.js && node test.js"
+    "test": "jest"
   },
   "repository": {
     "type": "git",

@@ -1,7 +1,5 @@
 {
-  "scripts": {
-    "./test.js": {
-      "searchPath": "./tests/data/hierarchy"
-    }
-  }
+  "exclude": ["hierarchy"],
+  "searchPath": "./tests/data/hierarchy"
+
 }

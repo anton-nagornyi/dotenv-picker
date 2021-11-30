@@ -96,21 +96,35 @@ project's root for that:
 
 ```json
 {
+  "searchPath": "./tests/data",
+  "exclude": ["some-folder"],
+  "rememberLastSelection": false,
+  "exitWhenNoSelection": false,
+  "defaultSelection": ".env.local",
   "scripts": {
     "./you.script.js": {
       "searchPath": "./tests/data/hierarchy",
       "exclude": ["node_modules"],
-      "rememberLastSelection": true
+      "rememberLastSelection": true,
+      "exitWhenNoSelection": false,
+      "defaultSelection": ".env.local.special"
     }
   }
 ```
-Configuration is done per script. If you are starting `you.script.js` then you need to
+Configuration may be done per script. If you are starting `you.script.js` then you need to
 have the corespondent `./you.script.js` field inside the `scripts` section.
+
+Or you can set configuration globally for all scripts at once. The rule here is that
+script config has priority over the global config.
 
 All of these settings are *optional*: 
 * `searchPath` - where to search for the `.env` files.
 * `exclude` - exclude folders from search. More details [here](https://www.npmjs.com/package/ignore).
 * `rememberLastSelection` - remember `.env` file selection for the next script run.
+* `exitWhenNoSelection` - default is `true`. When `true` and you press ctrl+c process will immediately exit.
+* `defaultSelection` - when no selection was made previously this will be used as fallback. Useful
+in case you have only one `.env` and want it to be selected automatically not to block 
+execution with selection ui. Set this value relative to the `searchPath` or to the project's root. 
 
 ### Remember previous selection per script
 
