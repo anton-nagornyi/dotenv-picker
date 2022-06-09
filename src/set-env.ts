@@ -8,8 +8,8 @@ const setEnv = (dotEnvPath: string): void => {
   });
 
   const cmd = process.argv.slice(2).join(' ');
-  const { APPDATA } = process.env;
-  execSync(cmd, { stdio: 'inherit', env: { ...result.parsed, APPDATA } });
+  const { APPDATA, PATH } = process.env;
+  execSync(cmd, { stdio: 'inherit', env: { ...result.parsed, APPDATA, PATH } });
 };
 
 baseSelect(setEnv);
