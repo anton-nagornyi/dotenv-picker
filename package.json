@@ -1,6 +1,6 @@
 {
   "name": "dotenv-picker",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Choose .env file when running your app",
   "keywords": [
     "dotenv",
